@@ -1,0 +1,57 @@
+/* Finance page (Shournagh OS). Colours only via theme tokens. */
+.fin .strong{color:var(--ink);font-weight:500}
+.fin-banner{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:11px 16px;margin:0 0 12px;border-radius:14px;border:1px dashed var(--border-strong);background:var(--surface-faint);font-size:12.5px;line-height:1.5;color:var(--body)}
+.fin-banner-k{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.16em;color:var(--warn);padding:3px 8px;border-radius:999px;background:var(--warn-soft);flex:none}
+.fin-s{display:block;font-size:11.5px;color:var(--dim);line-height:1.45;margin-top:2px}
+.fin-t{display:block;font-size:13px;color:var(--ink)}
+.fin-cap{font-size:11.5px;color:var(--faint);margin-top:10px;line-height:1.5}
+.fin-gap{margin-top:12px}
+
+.fin-rowbtn{width:calc(100% + 16px);border:0;background:none;font:inherit;color:inherit;text-align:left}
+.fin-matrix td .sh-num{display:block}
+.fin-matrix td .fin-s{margin-top:1px}
+.fin-matrix tr.tot td{background:var(--surface-faint)}
+.fin-table tfoot td{padding:11px 14px;border-top:1px solid var(--border-strong);color:var(--ink);font-weight:500}
+
+.fin-sel tr.on td{background:var(--accent-soft)}
+
+.fin-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:12px;align-items:start}
+.fin-split.q{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}
+.fin-cmp{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+.fin-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.fin-pane{padding:13px 14px;border-radius:14px;border:1px solid var(--border);background:var(--surface-faint);min-width:0}
+.fin-pane.accent{background:var(--accent-faint);border-color:var(--accent-line)}
+.fin-pane .h{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.fin-pane .src{font-size:11.5px;color:var(--dim);margin-top:3px}
+.fin-pane .v{font-size:15px;font-weight:600;letter-spacing:-.2px;margin-top:6px;color:var(--ink)}
+.fin-pane .v.bad{color:var(--bad)}
+.fin-pane .v.ok{color:var(--ok)}
+.fin-pane p{margin:8px 0 0;font-size:13px;line-height:1.55;color:var(--body)}
+
+.fin-pick{display:flex;align-items:flex-start;gap:12px;width:100%;padding:12px 12px;border-radius:14px;border:1px solid var(--border);background:var(--surface);font:inherit;color:inherit;text-align:left;cursor:pointer;transition:border-color .18s var(--ease),background .18s var(--ease)}
+.fin-pick+.fin-pick{margin-top:8px}
+.fin-pick:hover{border-color:var(--border-strong)}
+.fin-pick.on{border-color:var(--accent-line);background:var(--accent-faint)}
+.fin-pick:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.fin-flow{display:grid;grid-template-columns:minmax(0,1fr) 28px minmax(0,1fr) 28px minmax(0,1fr);gap:8px;align-items:stretch}
+.fin-flow .arr{display:flex;align-items:center;justify-content:center;color:var(--faint)}
+.fin-flow .fin-pane{display:flex;flex-direction:column;gap:8px}
+.fin-flow .fin-pane p{flex:1}
+
+.fin-draft{padding:13px 15px;border-radius:14px;background:var(--accent-faint);border:1px solid var(--accent-line);font-size:13px;line-height:1.6;color:var(--body);white-space:pre-wrap}
+.fin-quote{padding:10px 13px;border-radius:12px;background:var(--surface-faint);border:1px solid var(--border);font-size:12.5px;line-height:1.5;color:var(--body)}
+
+.fin-bars .row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;align-items:center;font-size:12.5px}
+.fin-bars .row+.row{margin-top:10px}
+.fin-bars .row .sh-bar{grid-column:1 / -1}
+
+.fin-fee th,.fin-fee td{padding:8px 12px}
+
+@media (max-width:1100px){.fin-split,.fin-split.q{grid-template-columns:1fr}}
+@media (max-width:900px){
+  .fin-cmp,.fin-flow{grid-template-columns:1fr}
+  .fin-flow .arr{transform:rotate(90deg);height:20px}
+}
+@media (max-width:560px){.fin-two{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.fin-pick{transition:none}}

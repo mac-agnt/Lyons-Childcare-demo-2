@@ -1,0 +1,90 @@
+/* Policies page (library, how we do it, versions, regulation watch, inspection, evidence). Tokens only. */
+
+.policies-lib{display:grid;grid-template-columns:minmax(300px,.85fr) minmax(0,1.4fr);gap:12px;align-items:start}
+@media (max-width:1100px){.policies-lib{grid-template-columns:1fr}}
+.policies-list{display:flex;flex-direction:column}
+.policies-item{display:flex;align-items:flex-start;gap:12px;width:100%;padding:11px 12px;border:0;border-radius:12px;background:none;font:inherit;color:inherit;text-align:left;cursor:pointer;transition:background .15s var(--ease)}
+.policies-item+.policies-item{margin-top:2px}
+.policies-item:hover{background:var(--surface-2)}
+.policies-item.on{background:var(--accent-faint);box-shadow:inset 0 0 0 1px var(--accent-line)}
+.policies-item .t{font-size:13px;font-weight:500;color:var(--ink);line-height:1.35}
+.policies-item .m{font-size:11.5px;color:var(--faint);margin-top:3px;line-height:1.4}
+.policies-ico{width:30px;height:30px;flex:none;border-radius:10px;display:flex;align-items:center;justify-content:center;background:var(--surface-2);color:var(--dim);border:1px solid var(--border)}
+.policies-item.on .policies-ico{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+
+.policies-sec{margin-top:18px}
+.policies-sec>.h{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--faint);margin-bottom:8px}
+.policies-excerpt{padding:12px 14px;border-radius:12px;background:var(--surface-faint);border:1px solid var(--border)}
+.policies-excerpt+.policies-excerpt{margin-top:8px}
+.policies-excerpt .eh{font-size:12.5px;font-weight:600;color:var(--ink)}
+.policies-excerpt .et{font-size:13px;color:var(--body);line-height:1.6;margin-top:4px}
+
+/* Playbooks */
+.policies-steps{list-style:none;margin:0;padding:0;counter-reset:pb}
+.policies-steps li{counter-increment:pb;display:flex;gap:12px;padding:9px 0;font-size:13px;line-height:1.55;color:var(--body)}
+.policies-steps li+li{border-top:1px solid var(--border)}
+.policies-steps li::before{content:counter(pb);flex:none;width:22px;height:22px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;background:var(--accent-soft);color:var(--accent);margin-top:1px}
+.policies-qa{padding:11px 13px;border-radius:12px;border:1px solid var(--border);background:var(--surface-faint)}
+.policies-qa+.policies-qa{margin-top:8px}
+.policies-qa .q{font-size:13px;font-weight:600;color:var(--ink)}
+.policies-qa .a{font-size:13px;color:var(--body);line-height:1.55;margin-top:4px}
+.policies-qa .src{font-size:11.5px;color:var(--faint);margin-top:6px}
+.policies-sugg{display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:999px;border:1px solid var(--border);background:var(--surface-2);color:var(--body);font:inherit;font-size:12px;cursor:pointer}
+.policies-sugg:hover{border-color:var(--border-strong);color:var(--ink)}
+
+/* Policy flow stepper */
+.policies-flow{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;min-width:760px}
+.policies-stage{position:relative;padding:12px 10px 12px;border-radius:14px;border:1px solid var(--border);background:var(--surface-faint);min-height:118px}
+.policies-stage .n{font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.08em}
+.policies-stage .l{font-size:12.5px;font-weight:600;color:var(--dim);margin-top:6px;line-height:1.3}
+.policies-stage .w{font-size:11px;color:var(--faint);margin-top:6px;line-height:1.4}
+.policies-stage.done{background:var(--accent-faint);border-color:var(--accent-line)}
+.policies-stage.done .l{color:var(--ink)}
+.policies-stage.cur{background:var(--surface-2);border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.policies-stage.cur .l{color:var(--accent)}
+.policies-stage.cur .w{color:var(--body)}
+
+/* Regulation watch */
+.policies-watch{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:16px;padding:16px 18px;border-top:1px solid var(--border)}
+.policies-watch:first-child{border-top:0}
+.policies-watch .t{font-size:14px;font-weight:600;color:var(--ink);line-height:1.35}
+.policies-watch .d{font-size:13px;color:var(--body);line-height:1.55;margin-top:5px}
+.policies-ext{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--accent);text-decoration:none}
+.policies-ext:hover{text-decoration:underline;text-underline-offset:3px}
+
+/* Inspection */
+.policies-check{display:flex;align-items:flex-start;gap:10px;padding:8px 0}
+.policies-check+.policies-check{border-top:1px solid var(--border)}
+.policies-check .ic{width:20px;height:20px;flex:none;border-radius:999px;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.policies-check .ic.ok{background:var(--ok-soft);color:var(--ok)}
+.policies-check .ic.no{background:var(--warn-soft);color:var(--warn)}
+.policies-check .l{font-size:13px;color:var(--ink);line-height:1.4}
+.policies-check .e{font-size:11.5px;color:var(--dim);line-height:1.45;margin-top:2px}
+.policies-ring{display:flex;align-items:baseline;gap:6px}
+.policies-ring b{font-size:30px;font-weight:600;letter-spacing:-1px;font-variant-numeric:tabular-nums;color:var(--ink)}
+
+/* Pack preview (document) */
+.policies-doc{background:var(--surface-faint);border:1px solid var(--border);border-radius:14px;padding:22px 24px;font-size:13px;line-height:1.6;color:var(--body)}
+.policies-doc h3{margin:0;font-size:18px;font-weight:600;color:var(--ink);letter-spacing:-.3px}
+.policies-doc h4{margin:18px 0 6px;font-size:12px;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:500}
+.policies-doc table{width:100%;border-collapse:collapse;font-size:12.5px}
+.policies-doc td{padding:6px 0;border-bottom:1px solid var(--border);vertical-align:top}
+.policies-doc td:first-child{color:var(--dim);width:42%;padding-right:12px}
+.policies-doc tr:last-child td{border-bottom:0}
+.policies-doc ul{margin:0;padding-left:18px}
+.policies-doc li{margin:2px 0}
+
+/* Evidence vault: one band per registered service */
+.policies-band{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 18px;border-bottom:2px solid var(--accent-line);background:var(--accent-faint);border-radius:var(--card-r,18px) var(--card-r,18px) 0 0}
+.policies-band .ref{font-family:var(--mono);font-size:12px;color:var(--accent);padding:3px 9px;border-radius:999px;border:1px solid var(--accent-line)}
+.policies-band .nm{font-size:14px;font-weight:600;color:var(--ink)}
+.policies-band .ad{font-size:12px;color:var(--dim)}
+.policies-lock{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:var(--faint)}
+
+@media (max-width:760px){
+  .policies-watch{grid-template-columns:1fr}
+  .policies-doc{padding:16px}
+}
+@media (prefers-reduced-motion:reduce){
+  .policies-item,.policies-sugg{transition:none !important}
+}

@@ -1,9 +1,14 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import { arr, cat, css, txt } from "../../runtime/template";
 
 type Props = { v: any };
 
 export default function HomeThread({ v }: Props) {
+  const endRef = useRef<HTMLDivElement>(null);
+  const count = Array.isArray(v.thread) ? v.thread.length : 0;
+  useEffect(() => {
+    if (count > 1) endRef.current?.scrollIntoView({ block: "end", behavior: "smooth" });
+  }, [count]);
   return (
     <>
       <div style={css(v.threadWidthStyle)}>
@@ -140,6 +145,23 @@ export default function HomeThread({ v }: Props) {
                           </div>
                         </>
                       )}
+                      {m?.hasSources && (
+                        <>
+                          <div style={{"display":"flex","flexWrap":"wrap","alignItems":"center","gap":"6px","marginTop":"12px"}}>
+                            <span style={{"fontFamily":"var(--mono)","fontSize":"9.5px","letterSpacing":"0.1em","color":"var(--faint)"}}>{"SOURCES"}</span>
+                            {arr(m?.sources).map((src: any, si: number) => (
+                              <span key={si} style={{"display":"inline-flex","alignItems":"center","height":"22px","padding":"0 9px","borderRadius":"999px","border":"1px solid var(--border)","background":"var(--surface)","fontSize":"11px","color":"var(--dim)"}}>{txt(src)}</span>
+                            ))}
+                          </div>
+                        </>
+                      )}
+                      {m?.hasDecided && (
+                        <>
+                          <div style={{"display":"inline-flex","alignItems":"center","gap":"7px","marginTop":"12px","height":"26px","padding":"0 11px","borderRadius":"999px","background":"var(--accent-soft)","color":"var(--accent)","fontSize":"12px"}}>
+                            {txt(m?.decidedLabel)}
+                          </div>
+                        </>
+                      )}
                       {m?.hasConfirm && (
                         <>
                           <div style={{"marginTop":"16px","padding":"16px 18px","background":"var(--accent-faint)","border":"1px solid var(--accent-line)","borderRadius":"var(--card-r,18px)"}}>
@@ -186,6 +208,7 @@ export default function HomeThread({ v }: Props) {
             </div>
           </Fragment>
         ))}
+        <div ref={endRef} />
       </div>
     </>
   );

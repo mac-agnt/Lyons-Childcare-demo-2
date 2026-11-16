@@ -1,57 +1,62 @@
-# Pulse — Harbour
+# Shournagh OS (powered by Pulse)
 
-React build of the **Pulse v5 Harbour** design from Claude Design, the operations dashboard mocked up for Kilbride Group.
-
-Every page, theme and interaction from the design is here. Screens were checked against the original mockup and match pixel for pixel at 1440×900 and 1024×720.
+Frontend-only sales demonstration of an operating platform for **Shournagh Childcare**, Blarney, Co. Cork.
+Built on the Pulse v4 Glass / Harbour codebase. **All data is synthetic sample data.** Nothing is sent, charged,
+submitted or synced: every "sent" state is simulated.
 
 ## Run it
 
 ```bash
 npm install
 npm run dev        # http://localhost:5173
-npm run build      # type-check + production build into dist/
+npm run typecheck
+npm run build
 ```
+
+## Deploy on Vercel
+
+Import the GitHub repo in Vercel and press Deploy. `vercel.json` sets everything: Vite framework, `npm ci`,
+`npm run build`, output `dist`. No environment variables are needed (no backend, no API keys).
+
+The URL hash keeps your place: `#/Finance/reconciliation`, `#/Home?as=parent`, `#/Centres/today?as=manager-elm`.
 
 ## What's in it
 
 | Area | Where |
 | --- | --- |
-| Pages: Home (Helios chat), Agents, Dashboard, Work, Records, Activity, Settings | `src/views/pages/` |
-| Overlays: ⌘K palette, agent studio, Helios mini chat, work viewer, new record, background gallery | `src/views/overlays/` |
-| App frame: sidebar, top bar, notifications | `src/views/AppShell.tsx` |
-| State and behaviour | `src/logic/PulseLogic.js` |
-| Demo data (Kilbride Group) | `src/logic/data.js` |
-| Agent avatar | `src/components/AgentFace.tsx` |
-| Theme tokens (Harbour, light and 11 more), animations | `src/styles/pulse.css` |
+| Synthetic dataset (single source of truth) | `src/shournagh/seed.ts` (assumptions listed at the top) |
+| State, actions, derived counts, roles, tour | `src/shournagh/store.ts` |
+| Helios canned, context-aware answers | `src/shournagh/chat.ts` |
+| UI kit and theme tokens (`shournagh`, `shournagh-light`) | `src/shournagh/ui.tsx`, `src/shournagh/shournagh.css` |
+| Pages: Overview, Centres, Families, People, Policies, Finance, Work, Activity, Settings, Records (memory, search) | `src/shournagh/pages/` |
+| Room tablet and parent phone app | `src/shournagh/surfaces/` |
+| Shell: site switch, Preview as, record drawer, tour, trust drawer | `src/shournagh/shell/` |
+| Home (Helios chat), Agents, Ontology graph, Files, Contacts | `src/views/` + `src/logic/` (Pulse, re-skinned) |
 
-## How it fits together
+## Demo controls
 
-- **`PulseLogic`** holds all state. Its `renderVals()` returns one flat object `v`.
-- **Views** are plain React components that render from `v`.
-- **`LogicHost`** (`src/runtime/logic.tsx`) mounts the logic and re-renders on `setState`.
-- **Backgrounds** live in `src/App.tsx`:
-  - `dashboardBackdrop`: the colour of the Dashboard KPI background
-  - `kpiBackdropOn`: whether that background shows
-  - `recordsBackdrop`: the colour of the Records wash (`""` uses the theme gradient)
-- **Customising for a client:** read `CLAUDE.md` first. It lists the layout rules every copy keeps.
+- **Site switch** (sidebar): Both / Elmgrove / Ballyneety. Site managers are locked to their own centre.
+- **Preview as** (top right): Owner (Edel Lyons), Site Manager Elmgrove / Ballyneety, Room Educator (tablet),
+  HR Admin, Parent (phone app). Same data, scoped views.
+- **Tour for Edel**: six stops (overview, two sites, policy, room tablet, parent phone, finance).
+- **Away mode** (Home rail): managers run the day; only the one owner decision escalates.
+- **Reset demo** (Preview as menu): back to the start of the demo day.
 
-## Updating from Claude Design
+## Story figures (baseline, all derived from the dataset)
 
-Export the new version, replace the file in `design/`, then run:
+30 staff (17 Elmgrove, 13 Ballyneety), 23 on duty, 7 away. 104 children expected today (62 + 42), 121 holding
+bookings (70 + 51). Registered capacity is reference only: Elmgrove 77, Ballyneety 55 sessional; the Ballyneety
+school-age service (TU2021CC067SA) is separate and never added. 6 overdue invoices = €2,940. 3 NCS/ECCE mismatches
+= €432. Safe Sleep v4.0: 26 of 30 signed. 1 cover request, 1 urgent parent notice (acknowledged), 1 new enquiry.
 
-```bash
-npm run import-design
-```
+## Assumptions to validate with the client
 
-This regenerates:
+Room names and sizes, which rooms run in which building, every person other than Edel Lyons (Claire Lyons appears only
+as the public register contact), fees and funding amounts, legal relationship between the two registrations, Acorn
+export/API feasibility, NCS/ECCE portal routes, email/SMS providers, and any statutory ratio rules (none configured:
+staffing shows as a coverage watch).
 
-- `src/views/`
-- `src/styles/pulse.css`
-- `src/styles/interactions.css`
-- `src/logic/`
+## Template rules kept
 
-`AgentFace` is hand-written and left alone. Commit before running, because it overwrites hand edits to those files.
-
-## Fixed from the mockup
-
-In the mockup, the work viewer's wrapper `<div>` was never closed. As a result, the ⌘K palette, agent studio, new record dialog and background gallery could only appear while the work viewer was open. They now open on their own. The fix is applied in `tools/import-design.mjs`.
+See `CLAUDE.md`: Agents sits directly under Home, Records opens on Ontology first, the Home centre column stays clean
+(briefing cards live in the right rail). Don't run `npm run import-design` on this copy.

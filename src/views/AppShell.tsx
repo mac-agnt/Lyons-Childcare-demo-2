@@ -2,15 +2,10 @@ import { Fragment } from "react";
 import { arr, cat, css, cx, txt } from "../runtime/template";
 import AgentFace from "../components/AgentFace";
 import NavThumb from "../components/NavThumb";
-import DashboardKpiBand from "./pages/DashboardKpiBand";
 import Home from "./pages/Home";
-import Work from "./pages/Work";
 import Records from "./pages/Records";
 import RecordsFiles from "./pages/RecordsFiles";
 import RecordsOntology from "./pages/RecordsOntology";
-import Activity from "./pages/Activity";
-import Settings from "./pages/Settings";
-import Dashboard from "./pages/Dashboard";
 import Agents from "./pages/Agents";
 import HeliosMini from "./overlays/HeliosMini";
 import WorkViewer from "./overlays/WorkViewer";
@@ -18,10 +13,70 @@ import AgentStudio from "./overlays/AgentStudio";
 import NewRecordDialog from "./overlays/NewRecordDialog";
 import CommandPalette from "./overlays/CommandPalette";
 import BackgroundGallery from "./overlays/BackgroundGallery";
+import { useDemo, roleDef } from "../shournagh/store";
+import { SiteSwitch, RoleMenu, Toast, TourCard, SidebarDemoCard } from "../shournagh/shell/DemoControls";
+import RecordDrawer from "../shournagh/shell/RecordDrawer";
+import ReassuranceDrawer from "../shournagh/shell/Reassurance";
+import Overview from "../shournagh/pages/Overview";
+import Centres from "../shournagh/pages/Centres";
+import Families from "../shournagh/pages/Families";
+import People from "../shournagh/pages/People";
+import Policies from "../shournagh/pages/Policies";
+import Finance from "../shournagh/pages/Finance";
+import WorkPage from "../shournagh/pages/WorkPage";
+import ActivityPage from "../shournagh/pages/ActivityPage";
+import SettingsPage from "../shournagh/pages/SettingsPage";
+import RecordsMemory from "../shournagh/pages/RecordsMemory";
+import RecordsSearch from "../shournagh/pages/RecordsSearch";
+import RoomTablet from "../shournagh/surfaces/RoomTablet";
+import ParentApp from "../shournagh/surfaces/ParentApp";
+import MobileShell from "../shournagh/shell/MobileShell";
 
 type Props = { v: any };
 
 export default function AppShell({ v }: Props) {
+  const ds = useDemo();
+  const role = roleDef(ds.role);
+  if (role.surface !== "admin") {
+    return (
+      <div data-theme={v.theme} style={{ fontFamily: "var(--ui)", height: "100vh", overflowY: "auto", background: "var(--bg)", color: "var(--ink)" }}>
+        {role.surface === "tablet" ? <RoomTablet /> : <ParentApp />}
+        <RecordDrawer />
+        <Toast />
+        <TourCard />
+      </div>
+    );
+  }
+  if (v.vw < 760) {
+    return (
+      <>
+        <MobileShell v={v}>
+          {v.shPage === "Overview" && <Overview />}
+          {v.shPage === "Centres" && <Centres />}
+          {v.shPage === "Families" && <Families />}
+          {v.shPage === "People" && <People />}
+          {v.shPage === "Policies" && <Policies />}
+          {v.shPage === "Finance" && <Finance />}
+          {v.isWork && <WorkPage />}
+          {v.isRecords && <Records v={v} />}
+          {v.rec?.isFiles && <RecordsFiles v={v} />}
+          {v.rec?.isOntology && <RecordsOntology v={v} />}
+          {v.rec?.isContacts && <RecordsSearch />}
+          {v.isRecords && v.recSectionId === "memory" && <RecordsMemory />}
+          {v.isRecords && v.recSectionId === "search" && <RecordsSearch />}
+          {v.isActivity && <ActivityPage />}
+          {v.isSettings && <SettingsPage />}
+          {v.isAgents && <Agents v={v} />}
+        </MobileShell>
+        <div data-theme={v.theme}>
+          <RecordDrawer />
+          <ReassuranceDrawer />
+          <Toast />
+          <TourCard />
+        </div>
+      </>
+    );
+  }
   return (
     <>
     <div data-theme={v.theme} style={{"fontFamily":"var(--ui)","position":"relative","display":"flex","height":"100vh","overflow":"hidden","background":"var(--bg)","color":"var(--ink)",...v.rootVars}}>
@@ -32,14 +87,14 @@ export default function AppShell({ v }: Props) {
         <span style={css(v.railThumbStyle)} />
         <div style={css(cat(v.railRowStyle, "margin-bottom:22px"))}>
           <button className={cx("ix0", "ix1")} onClick={v.toggleRail} title={v.railLabel} style={{"width":"36px","height":"36px","flex":"none","border":"0","borderRadius":"var(--cta-r,11px)","background":"var(--accent-fill,var(--accent))","color":"var(--on-accent)","boxShadow":"var(--accent-glow,none)","cursor":"pointer","display":"flex","alignItems":"center","justifyContent":"center","fontSize":"13px","fontWeight":"600","padding":"0","transition":"transform .2s var(--ease)"}}>
-            {"K"}
+            {"S"}
           </button>
           <span style={css(v.brandStyle)}>
             <span style={{"display":"block","fontSize":"15px","fontWeight":"600","letterSpacing":"-.3px","color":"var(--ink)"}}>
-              {"Kilbride Group"}
+              {"Shournagh OS"}
             </span>
             <span style={{"display":"block","marginTop":"2px","fontSize":"9px","fontWeight":"500","letterSpacing":".16em","color":"var(--accent)"}}>
-              {"PULSE · OPERATIONS"}
+              {"POWERED BY PULSE"}
             </span>
           </span>
           {v.railOpen && (
@@ -52,6 +107,7 @@ export default function AppShell({ v }: Props) {
             </>
           )}
         </div>
+        {v.railOpen ? <SiteSwitch /> : <div style={{ margin: "0 0 12px" }}><SiteSwitch compact /></div>}
         {arr(v.nav).map((item: any, i0: number) => (
           <Fragment key={i0}>
             {item?.isDivider && (
@@ -88,6 +144,7 @@ export default function AppShell({ v }: Props) {
           </Fragment>
         ))}
         <div style={{"flex":"1","minHeight":"10px"}} />
+        {v.railOpen && <SidebarDemoCard />}
         {v.railOpen && (
           <>
             <div style={{"margin":"6px 4px 4px","padding":"18px 18px 16px","background":"var(--surface)","border":"1px solid var(--border)","borderRadius":"18px"}}>
@@ -96,14 +153,14 @@ export default function AppShell({ v }: Props) {
               </div>
               <div style={{"display":"flex","alignItems":"center","gap":"11px","marginTop":"12px"}}>
                 <div style={{"width":"40px","height":"40px","flex":"none","borderRadius":"999px","background":"var(--accent-soft)","color":"var(--accent)","display":"flex","alignItems":"center","justifyContent":"center","fontSize":"13px","fontWeight":"600"}}>
-                  {"MK"}
+                  {role.initials}
                 </div>
                 <div style={{"minWidth":"0"}}>
                   <div style={{"fontSize":"17px","fontWeight":"600","letterSpacing":"-.3px","color":"var(--ink)","whiteSpace":"nowrap","overflow":"hidden","textOverflow":"ellipsis"}}>
-                    {"Martin Kilbride"}
+                    {role.person}
                   </div>
                   <div style={{"fontSize":"12.5px","color":"var(--faint)","marginTop":"2px","whiteSpace":"nowrap","overflow":"hidden","textOverflow":"ellipsis"}}>
-                    {"Kilbride Group · Owner"}
+                    {role.title}
                   </div>
                 </div>
               </div>
@@ -143,14 +200,14 @@ export default function AppShell({ v }: Props) {
             </button>
             <div style={css(cat(v.railRowStyle, "margin-top:10px;padding:12px 10px;border-top:1px solid var(--border)"))}>
               <div style={{"width":"40px","height":"40px","flex":"none","borderRadius":"12px","background":"var(--surface-2)","border":"1px solid var(--border)","color":"var(--body)","display":"flex","alignItems":"center","justifyContent":"center","fontSize":"12px","fontWeight":"600","cursor":"pointer"}}>
-                {"MK"}
+                {role.initials}
               </div>
               <span style={css(v.brandStyle)}>
                 <span style={{"display":"block","fontSize":"14px","fontWeight":"500","color":"var(--ink)"}}>
-                  {"Martin Kilbride"}
+                  {role.person}
                 </span>
                 <span style={{"display":"block","marginTop":"2px","fontSize":"12px","color":"var(--faint)"}}>
-                  {"Kilbride Group · Owner"}
+                  {role.title}
                 </span>
               </span>
             </div>
@@ -294,34 +351,8 @@ export default function AppShell({ v }: Props) {
                     <span style={{"position":"absolute","top":"9px","right":"10px","width":"8px","height":"8px","borderRadius":"999px","background":"var(--warn)","boxShadow":"0 0 0 2px var(--surface-2)"}} />
                   </button>
                 </div>
-                {v.showTeam && (
-                  <>
-                    <div style={{"width":"1px","height":"18px","flex":"none","margin":"0 4px","background":"var(--border)"}} />
-                    <div className="ix8" style={{"flex":"0 0 auto","display":"flex","alignItems":"center","gap":"9px","height":"42px","padding":"0 10px 0 16px","borderRadius":"999px","cursor":"pointer","transition":"background .2s var(--ease)"}}>
-                      <div style={{"display":"flex","alignItems":"center"}}>
-                        {arr(v.team).map((p: any, i2: number) => (
-                          <Fragment key={i2}>
-                            <div style={css(cat("width:30px;height:30px;border-radius:999px;background:", p?.bg, ";box-shadow:0 0 0 2px var(--surface-2);color:#0b0c0b;display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:600;margin-left:-8px"))}>
-                              {txt(p?.i)}
-                            </div>
-                          </Fragment>
-                        ))}
-                      </div>
-                      {v.showProfileText && (
-                        <>
-                          <div style={{"minWidth":"0"}}>
-                            <div style={{"fontSize":"12px","fontWeight":"500","lineHeight":"1.2","whiteSpace":"nowrap"}}>
-                              {"Martin Kilbride"}
-                            </div>
-                            <div style={{"fontSize":"10.5px","color":"var(--faint)","lineHeight":"1.2"}}>
-                              {"Owner"}
-                            </div>
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  </>
-                )}
+                <div style={{"width":"1px","height":"18px","flex":"none","margin":"0 4px","background":"var(--border)"}} />
+                <RoleMenu showText={v.showProfileText} />
               </>
             )}
             <button className="ix2" onClick={v.toggleBar} title={v.barLabel} style={{"flex":"none","width":"42px","height":"42px","border":"0","borderRadius":"999px","background":"none","color":"var(--faint)","cursor":"pointer","display":"flex","alignItems":"center","justifyContent":"center","transition":"background .2s var(--ease),color .2s var(--ease)"}}>
@@ -386,10 +417,15 @@ export default function AppShell({ v }: Props) {
             </div>
           </>
         )}
-        {v.isDashboard && <DashboardKpiBand v={v} />}
         <div data-scroll-main="1" style={{"flex":"1","minHeight":"0","overflowY":"auto","overflowX":"hidden","scrollbarWidth":"none"}}>
           {v.isChat && <Home v={v} />}
-          {v.isWork && <Work v={v} />}
+          {v.isWork && <WorkPage />}
+          {v.shPage === "Overview" && <Overview />}
+          {v.shPage === "Centres" && <Centres />}
+          {v.shPage === "Families" && <Families />}
+          {v.shPage === "People" && <People />}
+          {v.shPage === "Policies" && <Policies />}
+          {v.shPage === "Finance" && <Finance />}
           {v.isRecords && <Records v={v} />}
           {v.rec?.isContacts && (
             <>
@@ -471,7 +507,9 @@ export default function AppShell({ v }: Props) {
           )}
           {v.rec?.isFiles && <RecordsFiles v={v} />}
           {v.rec?.isOntology && <RecordsOntology v={v} />}
-          {v.isActivity && <Activity v={v} />}
+          {v.isRecords && v.recSectionId === "memory" && <RecordsMemory />}
+          {v.isRecords && v.recSectionId === "search" && <RecordsSearch />}
+          {v.isActivity && <ActivityPage />}
           {v.act?.detailOpen && (
             <>
               <div onClick={v.act?.closeDetail} style={{"position":"fixed","inset":"0","zIndex":"68","background":"var(--scrim)","backdropFilter":"blur(6px)","display":"flex","justifyContent":"flex-end"}}>
@@ -575,8 +613,7 @@ export default function AppShell({ v }: Props) {
               </div>
             </>
           )}
-          {v.isSettings && <Settings v={v} />}
-          {v.isDashboard && <Dashboard v={v} />}
+          {v.isSettings && <SettingsPage />}
           {v.isAgents && <Agents v={v} />}
         </div>
       </main>
@@ -820,6 +857,10 @@ export default function AppShell({ v }: Props) {
       {v.newRec?.open && <NewRecordDialog v={v} />}
       {v.paletteOpen && <CommandPalette v={v} />}
       {v.bgGallery?.open && <BackgroundGallery v={v} />}
+      <RecordDrawer />
+      <ReassuranceDrawer />
+      <Toast />
+      <TourCard />
     </div>
     </>
   );
